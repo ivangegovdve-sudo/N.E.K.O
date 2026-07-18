@@ -599,7 +599,7 @@ class AsrRuntimeMixin:
 
         try:
             settings = await _core_facade.aload_global_conversation_settings()
-            enabled = bool(settings.get("independentAsrEnabled", False))
+            enabled = bool(settings.get("independentAsrEnabled", True))
             optimization_value = settings.get(
                 "voice_input_resource_optimization_enabled",
                 settings.get("voiceInputResourceOptimizationEnabled", True),
@@ -790,6 +790,9 @@ class AsrRuntimeMixin:
 
             detector_ref = DetectorRuntime(
                 provider_policy=policy,
+                resource_optimization_enabled=(
+                    self._voice_input_resource_optimization_enabled
+                ),
                 on_endpointing_failure=(
                     on_detector_endpointing_failure
                     if policy.endpoint_authority == "smart_turn"
